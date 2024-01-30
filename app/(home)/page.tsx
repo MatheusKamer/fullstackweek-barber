@@ -3,6 +3,7 @@ import { ptBR } from "date-fns/locale";
 import Header from "../_components/header";
 import { capitalizeFirstLetter } from "../_utils/capitalizeFirstLetter";
 import Search from "./_components/Search";
+import BookingItem from "../_components/booking-item";
 
 export default function Home() {
   return (
@@ -20,6 +21,11 @@ export default function Home() {
 
       <div className="px-5">
         <Search />
+      </div>
+
+      <div className="px-5 pt-9 space-y-3">
+        <h2 className="text-sm uppercase text-gray-400 font-bold">AGENDAMENTOS</h2>
+        <BookingItem />
       </div>
     </div>
   );
