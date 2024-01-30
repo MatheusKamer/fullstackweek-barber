@@ -2,6 +2,7 @@ import { format } from "date-fns"
 import { ptBR } from "date-fns/locale";
 import Header from "../_components/header";
 import { capitalizeFirstLetter } from "../_utils/capitalizeFirstLetter";
+import Search from "./_components/Search";
 
 export default function Home() {
   return (
@@ -15,6 +16,10 @@ export default function Home() {
           locale: ptBR,
           }))}
         </p>
+      </div>
+
+      <div className="px-5">
+        <Search />
       </div>
     </div>
   );
