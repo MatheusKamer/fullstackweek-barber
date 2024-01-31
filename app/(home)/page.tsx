@@ -6,7 +6,7 @@ import BookingItem from "../_components/booking-item";
 import { db } from "../_lib/prisma";
 import BarbershopItem from "./_components/barbershop-item";
 import { Key } from "react";
-import Search from "./_components/Search";
+import Search from "./_components/search";
 
 export default async function Home() {
   const barbershops = await db.barbershop.findMany({})
