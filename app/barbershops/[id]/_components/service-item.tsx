@@ -70,7 +70,10 @@ const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps)
               </p>
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="secondary" onClick={handleBookingClick}>
+                  <Button
+                    variant="secondary"
+                    // onClick={handleBookingClick}
+                  >
                     Reservar
                   </Button>
                 </SheetTrigger>
