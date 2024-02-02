@@ -3,21 +3,24 @@
 import { Button } from "@/app/_components/ui/button";
 import { Calendar } from "@/app/_components/ui/calendar";
 import { Card, CardContent } from "@/app/_components/ui/card";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/app/_components/ui/sheet";
-import { Service } from "@prisma/client";
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/app/_components/ui/sheet";
+import { Barbershop, Service } from "@prisma/client";
 import { ptBR } from "date-fns/locale";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { generateDayTimeList } from "../_helpers/hours";
+import currencyFormat from "@/app/_utils/currencyFormat";
+import { format } from "date-fns";
 
 interface ServiceItemProps {
+  barbershop: Barbershop
   service: Service;
   isAuthenticated: boolean;
 }
 
-const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
-  const [date, setDate] = useState<Date | undefined>(new Date())
+const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps) => {
+  const [date, setDate] = useState<Date | undefined>(undefined)
   const [hour, setHour] = useState<string | undefined>()
 
   const handleDateClick = (date: Date | undefined) => {
@@ -31,7 +34,7 @@ const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
 
   const handleBookingClick = () => {
     if (!isAuthenticated) {
-      // return signIn("google");
+      return signIn("google");
     }
 
     // TODO abrir modal de agendamento
@@ -63,10 +66,7 @@ const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
 
             <div className="flex items-center justify-between mt-3">
               <p className="text-primary text-sm font-bold">
-                {Intl.NumberFormat('pt-BR', {
-                  style: "currency",
-                  currency: "BRL"
-                }).format(service.price)}
+                {currencyFormat(service.price)}
               </p>
               <Sheet>
                 <SheetTrigger asChild>
@@ -98,7 +98,7 @@ const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
                   />
 
                   {date && (
-                    <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden py-6 px-5 gap-3 border-y border-solid border-secondary">
+                    <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden py-6 px-5 gap-3 border-t border-solid border-secondary">
                       {timeList.map((time) => (
                         <Button
                           onClick={() => handleHourClick(time)}
@@ -113,6 +113,44 @@ const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
                       ))}
                     </div>
                   )}
+
+                  <div className="py-6 px-5 border-t border-solid border-secondary">
+                    <Card>
+                      <CardContent className="p-3 space-y-3">
+                        <div className="flex justify-between font-bold">
+                          <h2>{service.name}</h2>
+                          <h3 className="text-sm">{currencyFormat(service.price)}</h3>
+                        </div>
+
+                        {date && (
+                          <div className="flex justify-between text-sm">
+                            <h3 className="text-gray-400">Data</h3>
+                            <h3>
+                              {format(date, "dd 'de' MMMM", {
+                                locale: ptBR,
+                              })}
+                          </h3>
+                          </div>
+                        )}
+
+                        {hour && (
+                          <div className="flex justify-between text-sm">
+                            <h3 className="text-gray-400">Horário</h3>
+                            <h3>{hour}</h3>
+                          </div>
+                        )}
+
+                        <div className="flex justify-between text-sm">
+                          <h3 className="text-gray-400">Barbearia</h3>
+                          <h3>{barbershop.name}</h3>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  <SheetFooter className="px-5">
+                    <Button disabled={!date || !hour}>Confirmar reserva</Button>
+                  </SheetFooter>
                 </SheetContent>
               </Sheet>
             </div>
