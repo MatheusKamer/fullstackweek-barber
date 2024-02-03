@@ -8,12 +8,14 @@ import { Barbershop, Service } from "@prisma/client";
 import { ptBR } from "date-fns/locale";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
-import { use, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { generateDayTimeList } from "../_helpers/hours";
 import currencyFormat from "@/app/_utils/currencyFormat";
 import { format, setHours, setMinutes } from "date-fns";
 import { saveBooking } from "../_actions/save-booking";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface ServiceItemProps {
   barbershop: Barbershop
@@ -22,11 +24,13 @@ interface ServiceItemProps {
 }
 
 const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps) => {
+  const router = useRouter()
   const { data } = useSession()
 
   const [date, setDate] = useState<Date | undefined>(undefined)
   const [hour, setHour] = useState<string | undefined>()
   const [submitIsLoading, setSubmitIsLoading] = useState(false)
+  const [sheetIsOpen, setSheetIsOpen] = useState(false)
 
   const handleDateClick = (date: Date | undefined) => {
     setDate(date)
@@ -63,6 +67,19 @@ const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps)
         userId: (data.user as any).id,
         date: newDate
       })
+
+      setSheetIsOpen(false);
+      setHour(undefined)
+      setDate(undefined)
+      toast("Agendamento realizado com sucesso!", {
+        description: (format(date, "'Para dia' dd 'de' MMMM", {
+          locale: ptBR,
+        })+ ` às ${hour}`),
+        action: {
+          label: "Visualizar",
+          onClick: () => router.push("/bookings"),
+        },
+      })
     } catch (error) {
       console.log(error);
     } finally {
@@ -98,7 +115,7 @@ const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps)
               <p className="text-primary text-sm font-bold">
                 {currencyFormat(service.price)}
               </p>
-              <Sheet>
+              <Sheet open={sheetIsOpen} onOpenChange={setSheetIsOpen}>
                 <SheetTrigger asChild>
                   <Button
                     variant="secondary"
