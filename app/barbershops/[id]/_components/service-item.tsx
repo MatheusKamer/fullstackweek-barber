@@ -1,22 +1,22 @@
 "use client"
 
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { format, setHours, setMinutes } from "date-fns";
+import Image from "next/image";
+import { ptBR } from "date-fns/locale";
+import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+import { Barbershop, Booking, Service } from "@prisma/client";
+import getDayBookings from "../_actions/get-bookings";
+import { saveBooking } from "../_actions/save-booking";
+import { generateDayTimeList } from "../_helpers/hours";
+import currencyFormat from "@/app/_utils/currencyFormat";
 import { Button } from "@/app/_components/ui/button";
 import { Calendar } from "@/app/_components/ui/calendar";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/app/_components/ui/sheet";
-import { Barbershop, Booking, Service } from "@prisma/client";
-import { ptBR } from "date-fns/locale";
-import { signIn, useSession } from "next-auth/react";
-import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
-import { generateDayTimeList } from "../_helpers/hours";
-import currencyFormat from "@/app/_utils/currencyFormat";
-import { format, setHours, setMinutes } from "date-fns";
-import { saveBooking } from "../_actions/save-booking";
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import getDayBookings from "../_actions/get-bookings";
 
 interface ServiceItemProps {
   barbershop: Barbershop
@@ -40,13 +40,13 @@ const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps)
     }
 
     const refreshAvailableHours = async () => {
-      const dayBookingsDB = await getDayBookings(barbershop.barbershopId, date)
+      const dayBookingsDB = await getDayBookings(barbershop.Id, date)
 
       setDayBookings(dayBookingsDB)
     }
 
     refreshAvailableHours();
-  }, [date])
+  }, [date, barbershop])
 
   const handleDateClick = (date: Date | undefined) => {
     setDate(date)
