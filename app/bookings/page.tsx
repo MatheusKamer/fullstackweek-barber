@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { db } from "../_lib/prisma";
 import Header from "../_components/header";
 import BookingItem from "../_components/booking-item";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../_lib/auth";
 
 const BookingPage = async () => {
   const session = await getServerSession(authOptions)

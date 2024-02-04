@@ -3,7 +3,7 @@ import { Service } from "@prisma/client";
 import { db } from "@/app/_lib/prisma";
 import ServiceItem from "./_components/service-item";
 import BarbershopInfo from "./_components/barbershop-info";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/_lib/auth";
 
 interface BarbershopDetailsPageProps {
   params: {
