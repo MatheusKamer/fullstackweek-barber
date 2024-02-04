@@ -37,7 +37,7 @@ export default async function Home() {
       <Header />
 
       <div className="px-5 py-6 space-y-1">
-        <h2 className="text-xl font-bold">Olá, Matheus</h2>
+        <h2 className="text-xl font-bold">{session?.user ? `Olá, ${session.user.name}` : `Olá, faça seu login!`}</h2>
         <p className="text-sm">{
             capitalizeFirstLetter(format(new Date(), "EEEE',' dd 'de' MMMM", {
           locale: ptBR,
@@ -49,15 +49,17 @@ export default async function Home() {
         <Search />
       </div>
 
-      <div className="px-5 pt-9 space-y-3">
-        <h2 className="text-sm uppercase text-gray-400 font-bold">AGENDAMENTOS</h2>
+      {confirmedBookings.length > 0 && (
+        <div className="px-5 pt-9 space-y-3">
+          <h2 className="text-sm uppercase text-gray-400 font-bold">AGENDAMENTOS</h2>
 
-        <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {confirmedBookings.map((booking: Booking) =>
-            <BookingItem key={booking.id} booking={booking}/>
-          )}
+          <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+            {confirmedBookings.map((booking: Booking) =>
+              <BookingItem key={booking.id} booking={booking}/>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="mt-6 space-y-3">
         <h2 className="px-5 text-sm uppercase text-gray-400 font-bold">RECOMENDADOS</h2>
