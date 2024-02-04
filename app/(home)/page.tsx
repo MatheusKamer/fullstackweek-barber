@@ -1,14 +1,14 @@
 import { format } from "date-fns"
-import { ptBR } from "date-fns/locale";
-import Header from "../_components/header";
-import { capitalizeFirstLetter } from "../_utils/capitalizeFirstLetter";
-import BookingItem from "../_components/booking-item";
-import { db } from "../_lib/prisma";
-import BarbershopItem from "./_components/barbershop-item";
-import Search from "./_components/search";
-import { Barbershop, Booking } from "@prisma/client";
 import { getServerSession } from "next-auth";
+import { ptBR } from "date-fns/locale";
+import { Barbershop, Booking } from "@prisma/client";
+import { db } from "../_lib/prisma";
+import Header from "../_components/header";
+import Search from "./_components/search";
+import BookingItem from "../_components/booking-item";
+import BarbershopItem from "./_components/barbershop-item";
 import { authOptions } from "../_lib/auth";
+import { capitalizeFirstLetter } from "../_utils/capitalizeFirstLetter";
 
 export default async function Home() {
   const session = await getServerSession(authOptions)
