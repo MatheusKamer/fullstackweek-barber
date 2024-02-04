@@ -17,7 +17,6 @@ import { Button } from "@/app/_components/ui/button";
 import { Calendar } from "@/app/_components/ui/calendar";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/app/_components/ui/sheet";
-import { ScrollArea, ScrollBar } from "@/app/_components/ui/scroll-area";
 
 interface ServiceItemProps {
   barbershop: Barbershop
@@ -162,91 +161,88 @@ const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps)
                   </Button>
                 </SheetTrigger>
 
-                <ScrollArea>
-                  <SheetContent className="p-0">
-                    <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
-                      <SheetTitle>Fazer Reserva</SheetTitle>
-                    </SheetHeader>
+                <SheetContent className="p-0">
+                  <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
+                    <SheetTitle>Fazer Reserva</SheetTitle>
+                  </SheetHeader>
 
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={handleDateClick}
-                      locale={ptBR}
-                      fromDate={new Date()}
-                      className="mt-6"
-                      styles={{
-                        head_cell: { width: "100%", textTransform: "capitalize" },
-                        cell: { width: "100%" },
-                        button: { width: "100%" },
-                        nav_button_previous: { width: "32px", height: "32px" },
-                        nav_button_next: { width: "32px", height: "32px" },
-                        caption: { textTransform: "capitalize" }
-                      }}
-                    />
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={handleDateClick}
+                    locale={ptBR}
+                    fromDate={new Date()}
+                    className="mt-6"
+                    styles={{
+                      head_cell: { width: "100%", textTransform: "capitalize" },
+                      cell: { width: "100%" },
+                      button: { width: "100%" },
+                      nav_button_previous: { width: "32px", height: "32px" },
+                      nav_button_next: { width: "32px", height: "32px" },
+                      caption: { textTransform: "capitalize" }
+                    }}
+                  />
 
-                    {date && (
-                      <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden py-6 px-5 gap-3 border-t border-solid border-secondary">
-                        {timeList.map((time) => (
-                          <Button
-                            onClick={() => handleHourClick(time)}
-                            className="rounded-full"
-                            key={time}
-                            variant={
-                              hour === time ? 'default' : 'secondary'
-                            }
-                          >
-                            {time}
-                          </Button>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="py-6 px-5 border-t border-solid border-secondary">
-                      <Card>
-                        <CardContent className="p-3 space-y-3">
-                          <div className="flex justify-between font-bold">
-                            <h2>{service.name}</h2>
-                            <h3 className="text-sm">{currencyFormat(service.price)}</h3>
-                          </div>
-
-                          {date && (
-                            <div className="flex justify-between text-sm">
-                              <h3 className="text-gray-400">Data</h3>
-                              <h3>
-                                {format(date, "dd 'de' MMMM", {
-                                  locale: ptBR,
-                                })}
-                            </h3>
-                            </div>
-                          )}
-
-                          {hour && (
-                            <div className="flex justify-between text-sm">
-                              <h3 className="text-gray-400">Horário</h3>
-                              <h3>{hour}</h3>
-                            </div>
-                          )}
-
-                          <div className="flex justify-between text-sm">
-                            <h3 className="text-gray-400">Barbearia</h3>
-                            <h3>{barbershop.name}</h3>
-                          </div>
-                        </CardContent>
-                      </Card>
+                  {date && (
+                    <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden py-6 px-5 gap-3 border-t border-solid border-secondary">
+                      {timeList.map((time) => (
+                        <Button
+                          onClick={() => handleHourClick(time)}
+                          className="rounded-full"
+                          key={time}
+                          variant={
+                            hour === time ? 'default' : 'secondary'
+                          }
+                        >
+                          {time}
+                        </Button>
+                      ))}
                     </div>
+                  )}
 
-                    <SheetFooter className="px-5">
-                      <Button disabled={!date || !hour || submitIsLoading} onClick={handleBookingSubmit}>
-                        {submitIsLoading && (
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <div className="py-6 px-5 border-t border-solid border-secondary">
+                    <Card>
+                      <CardContent className="p-3 space-y-3">
+                        <div className="flex justify-between font-bold">
+                          <h2>{service.name}</h2>
+                          <h3 className="text-sm">{currencyFormat(service.price)}</h3>
+                        </div>
+
+                        {date && (
+                          <div className="flex justify-between text-sm">
+                            <h3 className="text-gray-400">Data</h3>
+                            <h3>
+                              {format(date, "dd 'de' MMMM", {
+                                locale: ptBR,
+                              })}
+                          </h3>
+                          </div>
                         )}
-                        Confirmar reserva
-                      </Button>
-                    </SheetFooter>
-                  </SheetContent>
-                  <ScrollBar orientation="vertical" />
-                </ScrollArea>
+
+                        {hour && (
+                          <div className="flex justify-between text-sm">
+                            <h3 className="text-gray-400">Horário</h3>
+                            <h3>{hour}</h3>
+                          </div>
+                        )}
+
+                        <div className="flex justify-between text-sm">
+                          <h3 className="text-gray-400">Barbearia</h3>
+                          <h3>{barbershop.name}</h3>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  <SheetFooter className="px-5">
+                    <Button disabled={!date || !hour || submitIsLoading} onClick={handleBookingSubmit}>
+                      {submitIsLoading && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      Confirmar reserva
+                    </Button>
+                  </SheetFooter>
+                </SheetContent>
               </Sheet>
             </div>
           </div>
