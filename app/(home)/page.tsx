@@ -2,11 +2,11 @@ import { format } from "date-fns"
 import { getServerSession } from "next-auth";
 import { ptBR } from "date-fns/locale";
 import { Barbershop, Booking } from "@prisma/client";
+import BarbershopItem from "./_components/barbershop-item";
 import { db } from "../_lib/prisma";
-import Search from "./_components/search";
+import Search from "../_components/search";
 import Header from "../_components/header";
 import BookingItem from "../_components/booking-item";
-import BarbershopItem from "./_components/barbershop-item";
 import { authOptions } from "../_lib/auth";
 import { capitalizeFirstLetter } from "../_utils/capitalizeFirstLetter";
 
