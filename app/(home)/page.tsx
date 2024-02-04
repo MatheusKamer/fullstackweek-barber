@@ -6,10 +6,31 @@ import BookingItem from "../_components/booking-item";
 import { db } from "../_lib/prisma";
 import BarbershopItem from "./_components/barbershop-item";
 import Search from "./_components/search";
-import { Barbershop } from "@prisma/client";
+import { Barbershop, Booking } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function Home() {
-  const barbershops = await db.barbershop.findMany({})
+  const session = await getServerSession(authOptions)
+
+  const [barbershops, confirmedBookings] = await Promise.all([
+    db.barbershop.findMany({}),
+    session?.user ? db.booking.findMany({
+      where: {
+        userId: (session?.user as any).id,
+        date: {
+          gte: new Date(),
+        }
+      },
+      include: {
+        service: true,
+        barbershop: true,
+      },
+      orderBy: {
+        date: 'asc'
+      }
+    }) : Promise.resolve([])
+  ])
 
   return (
     <div>
@@ -30,7 +51,12 @@ export default async function Home() {
 
       <div className="px-5 pt-9 space-y-3">
         <h2 className="text-sm uppercase text-gray-400 font-bold">AGENDAMENTOS</h2>
-        {/* <BookingItem /> */}
+
+        <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          {confirmedBookings.map((booking: Booking) =>
+            <BookingItem key={booking.id} booking={booking}/>
+          )}
+        </div>
       </div>
 
       <div className="mt-6 space-y-3">

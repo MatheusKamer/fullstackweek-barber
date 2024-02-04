@@ -18,7 +18,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
   const isBookingConfirmed = isFuture(booking.date)
 
   return (
-    <Card className="rounded-lg">
+    <Card className="rounded-lg min-w-[90%]">
       <CardContent className="p-0 flex">
         <div className="flex flex-col gap-3 py-4 flex-[3] pl-5">
           <Badge variant={
