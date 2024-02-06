@@ -3,7 +3,7 @@
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { format, setHours, setMinutes } from "date-fns";
+import { addDays, format, setHours, setMinutes } from "date-fns";
 import Image from "next/image";
 import { ptBR } from "date-fns/locale";
 import { useRouter } from "next/navigation";
@@ -171,7 +171,7 @@ const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps)
                     selected={date}
                     onSelect={handleDateClick}
                     locale={ptBR}
-                    fromDate={new Date()}
+                    fromDate={addDays(new Date(), 1)}
                     className="mt-6"
                     styles={{
                       head_cell: { width: "100%", textTransform: "capitalize" },
