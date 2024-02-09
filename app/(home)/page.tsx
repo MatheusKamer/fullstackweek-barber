@@ -36,7 +36,7 @@ export default async function Home() {
     <div>
       <Header />
 
-      <div className="px-5 py-6 space-y-1">
+      <div className="px-5 py-6 space-y-2">
         <h2 className="text-xl font-bold">{session?.user ? `Olá, ${session.user.name}` : `Olá, faça seu login!`}</h2>
         <p className="text-sm">{
             capitalizeFirstLetter(format(new Date(), "EEEE',' dd 'de' MMMM", {
